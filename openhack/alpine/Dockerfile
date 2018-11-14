@@ -15,8 +15,6 @@ RUN apk add -U \
 
 RUN pip install mcstatus
 
-HEALTHCHECK CMD mcstatus localhost ping
-
 RUN addgroup -g 1000 minecraft \
   && adduser -Ss /bin/false -u 1000 -G minecraft -h /home/minecraft minecraft \
   && mkdir /data \
@@ -86,3 +84,5 @@ ENTRYPOINT ["/customstart.sh"]
 FROM openhack-1.0 as openhack-2.0
 
 COPY customstart-2.0.sh /customstart.sh
+
+HEALTHCHECK CMD rcon-cli --host 127.0.0.1 --port 25575 --password cheesesteakjimmys list > /logs/health
